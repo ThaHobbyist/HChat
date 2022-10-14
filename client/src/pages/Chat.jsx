@@ -55,8 +55,6 @@ function Chat() {
 		if (currentUser) {
 			socket.current.emit("add-user", currentUser._id);
 			socket.current.emit("connected", currentUser._id);
-		} else {
-			socket.current.emit("disconnected");
 		}
 	}, [currentUser]);
 

@@ -2,14 +2,31 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import ChatInput from "./ChatInput";
-import Logout from "./Logout";
 import axios from "axios";
 import { getMessageRoute, sendMessageRoute } from "../utils/APIRoutes";
 import { v4 as uuidv4 } from "uuid";
 
+const Status = ({ user, users }) => {
+	const [online, setOnline] = useState();
+
+	useEffect(() => {
+		if (users[user._id] === "on") setOnline(true);
+		else setOnline(false);
+	}, [users, user]);
+
+	return (
+		<>
+			<div className="status">
+				{online == true ? "Online" : "Offline"}
+			</div>
+		</>
+	);
+};
+
 function ChatContainer({ currentChat, currentUser, socket }) {
 	const [messages, setMessages] = useState([]);
 	const [arrivalMsg, setArrivalMsg] = useState(null);
+	const [users, setUsers] = useState({});
 	const scrollRef = useRef();
 
 	useEffect(() => {
@@ -50,6 +67,10 @@ function ChatContainer({ currentChat, currentUser, socket }) {
 					message: msg,
 				});
 			});
+
+			socket.current.on("updateUserStatus", (usrs) => {
+				setUsers(usrs);
+			});
 		}
 	}, []);
 
@@ -79,7 +100,7 @@ function ChatContainer({ currentChat, currentUser, socket }) {
 								<h3> {currentChat.username} </h3>
 							</div>
 						</div>
-						<div className="status">Online</div>
+						<Status user={currentChat} users={users} />
 						{/* <Logout /> */}
 					</div>
 					<div className="chat-messages">

@@ -5,7 +5,7 @@ import { BiPowerOff } from "react-icons/bi";
 import { host } from "../utils/APIRoutes";
 import { io } from "socket.io-client";
 
-function Logout() {
+function Logout({ currentUser }) {
 	const navigate = useNavigate();
 
 	const socket = useRef();
@@ -13,7 +13,7 @@ function Logout() {
 	const handleClick = async () => {
 		localStorage.clear();
 		socket.current = io(host);
-		socket.current.emit("disconnected");
+		socket.current.emit("disconnected", currentUser._id);
 		navigate("/login");
 	};
 	return (
