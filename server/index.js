@@ -42,14 +42,15 @@ io.on("connection", (socket) => {
 	global.chatSocket = socket;
 
 	socket.on("connected", (userId) => {
-		users[userId] = socket.id;
+		users[userId] = "on";
 		io.emit("updateUserStatus", users);
 		console.log(`User Connected: ${userId}`);
 	});
 
-	socket.on("disconnected", () => {
+	socket.on("disconnected", (userId) => {
+		users[userId] = "off";
 		io.emit("updateUserStatus", users);
-		console.log("User Disconnected");
+		console.log(`User Disconnected: ${userId}`);
 	});
 
 	socket.on("add-user", (userId) => {
