@@ -7,9 +7,6 @@ import { getMessageRoute, sendMessageRoute } from "../utils/APIRoutes";
 import { v4 as uuidv4 } from "uuid";
 
 const Status = ({ user, users }) => {
-  console.log(users);
-  console.log(user._id);
-  console.log(users[user._id]);
   const [online, setOnline] = useState();
 
   useEffect(() => {
