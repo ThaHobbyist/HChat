@@ -49,9 +49,11 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     const userId = Object.keys(users).find((id) => users[id] === socket.id);
-    if (userId) delete users[userId];
-    io.emit("updateUserStatus", users);
-    console.log(`User Disconnected: ${userId}`);
+    if (userId) {
+      delete users[userId];
+      io.emit("updateUserStatus", users);
+      console.log(`User Disconnected: ${userId}`);
+    }
   });
 
   socket.on("add-user", (userId) => {
