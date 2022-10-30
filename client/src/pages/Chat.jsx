@@ -32,7 +32,7 @@ function Chat() {
     };
 
     getUser();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     const callApi = async () => {
@@ -56,6 +56,10 @@ function Chat() {
         setOnlineUsers(usrs);
       });
     }
+
+    return () => {
+      socket.current?.disconnect();
+    };
   }, [currentUser]);
 
   const handleChatChange = (chat) => {
